@@ -1,12 +1,12 @@
 import { initializeApp } from 'firebase/app'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyD7xhfxskPmmGjDlX8il68e91yQgwnSoe8',
+  apiKey: 'AIzaSyBnNfqtLZpfRSOlZxYlhT5YTMZ4dlt-7Zw',
   authDomain: 'nkhanhtrn.github.io',
-  projectId: 'nkhanhtrn-chat',
-  storageBucket: 'nkhanhtrn-chat.firebasestorage.app',
-  messagingSenderId: '755232849374',
-  appId: '1:755232849374:web:90883dad132dcb7bb1314f',
+  projectId: 'nkhanhtrn-7minute',
+  storageBucket: 'nkhanhtrn-7minute.firebasestorage.app',
+  messagingSenderId: '966515605378',
+  appId: '1:966515605378:web:03ded3f2e2081e65e8599b',
 }
 
 export const app = initializeApp(firebaseConfig)
