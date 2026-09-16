@@ -1,3 +1,5 @@
+import { ref } from 'vue'
+
 const KEY = 'seven-minute-history'
 
 export function toISO(d) {
@@ -7,7 +9,7 @@ export function toISO(d) {
   return `${y}-${m}-${day}`
 }
 
-export function getHistory() {
+function load() {
   try {
     return new Set(JSON.parse(localStorage.getItem(KEY) ?? '[]'))
   } catch {
@@ -15,14 +17,35 @@ export function getHistory() {
   }
 }
 
-export function recordWorkout(date = new Date()) {
-  const set = getHistory()
-  set.add(toISO(date))
+const history = ref(load())
+
+export function useHistory() {
+  return history
+}
+
+export function getHistory() {
+  return history.value
+}
+
+export function getHistoryList() {
+  return [...history.value]
+}
+
+function persist(set) {
   try {
     localStorage.setItem(KEY, JSON.stringify([...set]))
   } catch {
     /* storage unavailable */
   }
+}
+
+export function setHistory(set) {
+  history.value = new Set([...set])
+  persist(history.value)
+}
+
+export function recordWorkout(date = new Date()) {
+  setHistory(new Set([...history.value, toISO(date)]))
 }
 
 export function currentStreak() {

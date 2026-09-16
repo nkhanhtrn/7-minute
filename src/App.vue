@@ -5,6 +5,7 @@ import WorkoutScreen from './components/WorkoutScreen.vue'
 import DoneScreen from './components/DoneScreen.vue'
 import { EXERCISES, WORK_SECONDS, REST_SECONDS } from './workout'
 import { recordWorkout } from './history'
+import { onAuthChange, recordWorkoutRemote } from './sync'
 import { initAudio, cues } from './audio'
 
 const READY_SECONDS = 10
@@ -72,6 +73,7 @@ function finish() {
   stopTimer()
   cues.finish()
   recordWorkout()
+  recordWorkoutRemote()
   sessionActive.value = false
   screen.value = 'done'
 }
@@ -136,7 +138,10 @@ function onKey(e) {
   }
 }
 
-onMounted(() => window.addEventListener('keydown', onKey))
+onMounted(() => {
+  window.addEventListener('keydown', onKey)
+  onAuthChange()
+})
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKey)
   stopTimer()

@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { getHistory, currentStreak, toISO } from '../history'
+import { useHistory, currentStreak, toISO } from '../history'
 
-const history = getHistory()
-const streak = currentStreak()
+const history = useHistory()
+const streak = computed(() => currentStreak())
 const todayISO = toISO(new Date())
 
 const now = new Date()
@@ -28,7 +28,7 @@ const cells = computed(() => {
     list.push({
       day: d,
       iso,
-      done: history.has(iso),
+      done: history.value.has(iso),
       isToday: iso === todayISO,
       isFuture: iso > todayISO,
     })

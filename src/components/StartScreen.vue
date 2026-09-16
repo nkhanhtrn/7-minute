@@ -1,6 +1,7 @@
 <script setup>
 import { EXERCISES, WORK_SECONDS, REST_SECONDS } from '../workout'
 import CalendarView from './CalendarView.vue'
+import AccountCard from './AccountCard.vue'
 
 defineProps({
   hasSession: { type: Boolean, default: false },
@@ -46,7 +47,10 @@ defineEmits(['start', 'continue'])
         </ol>
       </section>
 
-      <CalendarView />
+      <div class="right-col">
+        <CalendarView />
+        <AccountCard />
+      </div>
     </div>
   </div>
 </template>
@@ -154,6 +158,11 @@ h1 {
   color: var(--muted);
   font-size: 0.8rem;
   margin-top: 14px;
+}
+
+.right-col {
+  display: grid;
+  gap: 20px;
 }
 
 .list {
