@@ -17,6 +17,7 @@ const phase = ref('ready')
 const paused = ref(false)
 const remaining = ref(READY_SECONDS)
 const doneSeconds = ref(0)
+const sessionActive = ref(false)
 
 let endAt = 0
 let timer = null
@@ -71,12 +72,14 @@ function finish() {
   stopTimer()
   cues.finish()
   recordWorkout()
+  sessionActive.value = false
   screen.value = 'done'
 }
 
 function start() {
   initAudio()
   reset()
+  sessionActive.value = true
   screen.value = 'workout'
   run()
 }
@@ -88,7 +91,15 @@ function reset() {
   paused.value = false
   remaining.value = READY_SECONDS
   doneSeconds.value = 0
+  sessionActive.value = false
   cues.reset()
+}
+
+function continueWorkout() {
+  initAudio()
+  paused.value = false
+  screen.value = 'workout'
+  run()
 }
 
 function togglePause() {
@@ -108,7 +119,13 @@ function skip() {
 }
 
 function quit() {
-  reset()
+  if (screen.value === 'workout') {
+    stopTimer()
+    paused.value = true
+    sessionActive.value = true
+  } else {
+    reset()
+  }
   screen.value = 'start'
 }
 
@@ -128,7 +145,7 @@ onBeforeUnmount(() => {
 
 <template>
   <main>
-    <StartScreen v-if="screen === 'start'" @start="start" />
+    <StartScreen v-if="screen === 'start'" :has-session="sessionActive" @start="start" @continue="continueWorkout" />
     <WorkoutScreen
       v-else-if="screen === 'workout'"
       :exercise="exercise"

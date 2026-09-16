@@ -25,7 +25,6 @@ const PHASES = {
 <template>
   <div class="workout" :data-phase="phase">
     <div class="top">
-      <button class="link" @click="$emit('quit')">🏠 Home</button>
       <span class="counter">Step {{ index + 1 }} / {{ total }}</span>
     </div>
 
@@ -58,6 +57,7 @@ const PHASES = {
 
     <div class="controls">
       <button class="btn ghost" @click="$emit('toggle-pause')">{{ paused ? '▶ Resume' : '⏸ Pause' }}</button>
+      <button class="btn ghost" @click="$emit('quit')">🏠 Home</button>
       <button class="btn ghost" @click="$emit('skip')">⏭ Skip</button>
     </div>
   </div>
@@ -75,18 +75,7 @@ const PHASES = {
 
 .top {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.link {
-  background: none;
-  color: var(--muted);
-  padding: 6px 10px;
-}
-
-.link:hover {
-  color: var(--text);
+  justify-content: center;
 }
 
 .counter {

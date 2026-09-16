@@ -2,7 +2,11 @@
 import { EXERCISES, WORK_SECONDS, REST_SECONDS } from '../workout'
 import CalendarView from './CalendarView.vue'
 
-defineEmits(['start'])
+defineProps({
+  hasSession: { type: Boolean, default: false },
+})
+
+defineEmits(['start', 'continue'])
 </script>
 
 <template>
@@ -19,7 +23,14 @@ defineEmits(['start'])
         <div class="stat"><span class="v">30s</span><span class="k">Per Exercise</span></div>
         <div class="stat"><span class="v">10s</span><span class="k">Rest</span></div>
       </div>
-      <button class="btn start-btn" @click="$emit('start')">▶ Start Workout</button>
+      <div class="actions">
+        <button class="btn start-btn" @click="$emit('start')">
+          {{ hasSession ? '↻ Restart' : '▶ Start Workout' }}
+        </button>
+        <button v-if="hasSession" class="btn ghost continue-btn" @click="$emit('continue')">
+          ▶ Continue
+        </button>
+      </div>
       <p class="hint">Space bar pauses mid-workout</p>
     </header>
 
@@ -120,9 +131,22 @@ h1 {
   color: var(--muted);
 }
 
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .start-btn {
   font-size: 1.2rem;
   padding: 16px 44px;
+  border-radius: 999px;
+}
+
+.continue-btn {
+  font-size: 1.2rem;
+  padding: 16px 36px;
   border-radius: 999px;
 }
 
