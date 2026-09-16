@@ -73,7 +73,7 @@ function finish() {
   stopTimer()
   cues.finish()
   recordWorkout()
-  recordWorkoutRemote()
+  recordWorkoutRemote(new Date(), { exercises: TOTAL_STEPS, durationSec: TOTAL_SECONDS })
   sessionActive.value = false
   screen.value = 'done'
 }

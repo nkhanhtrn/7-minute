@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { getFirestore, collection, doc, getDocs, setDoc, serverTimestamp, writeBatch } from 'firebase/firestore'
+import { getFirestore, collection, doc, getDoc, getDocs, setDoc, serverTimestamp, writeBatch } from 'firebase/firestore'
 import { app } from './firebase'
 import { getHistoryList, setHistory, toISO } from './history'
 
@@ -57,11 +57,21 @@ export async function syncHistory() {
   }
 }
 
-export async function recordWorkoutRemote(date = new Date()) {
+export async function fetchWorkoutDetails(dateISO) {
+  if (!user.value) return null
+  try {
+    const snap = await getDoc(doc(db, 'users', user.value.uid, 'workouts', dateISO))
+    return snap.exists() ? snap.data() : null
+  } catch {
+    return null
+  }
+}
+
+export async function recordWorkoutRemote(date = new Date(), details = {}) {
   if (!user.value) return
   const iso = toISO(date)
   try {
-    await setDoc(doc(db, 'users', user.value.uid, 'workouts', iso), { date: iso, at: serverTimestamp() }, { merge: true })
+    await setDoc(doc(db, 'users', user.value.uid, 'workouts', iso), { date: iso, at: serverTimestamp(), ...details }, { merge: true })
     syncState.value = 'synced'
   } catch (e) {
     syncState.value = 'error'

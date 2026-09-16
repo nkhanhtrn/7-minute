@@ -1,7 +1,13 @@
 <script setup>
+import { ref } from 'vue'
 import { EXERCISES, WORK_SECONDS, REST_SECONDS } from '../workout'
+import { toISO } from '../history'
+import { user } from '../sync'
 import CalendarView from './CalendarView.vue'
 import AccountCard from './AccountCard.vue'
+import DayDetailsCard from './DayDetailsCard.vue'
+
+const selectedDate = ref(toISO(new Date()))
 
 defineProps({
   hasSession: { type: Boolean, default: false },
@@ -48,8 +54,9 @@ defineEmits(['start', 'continue'])
       </section>
 
       <div class="right-col">
-        <CalendarView />
-        <AccountCard />
+        <CalendarView :selected="selectedDate" :selectable="!!user" @select="selectedDate = $event" />
+        <DayDetailsCard v-if="user" :date="selectedDate" />
+        <AccountCard v-else />
       </div>
     </div>
   </div>

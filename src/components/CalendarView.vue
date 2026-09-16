@@ -9,6 +9,13 @@ const todayISO = toISO(new Date())
 const now = new Date()
 const view = ref({ year: now.getFullYear(), month: now.getMonth() })
 
+const props = defineProps({
+  selected: { type: String, default: '' },
+  selectable: { type: Boolean, default: false },
+})
+
+const emit = defineEmits(['select'])
+
 const monthLabel = computed(() =>
   new Date(view.value.year, view.value.month, 1).toLocaleString('en-US', { month: 'long', year: 'numeric' }),
 )
@@ -61,8 +68,9 @@ function shift(delta) {
         <div
           v-if="cell"
           class="cell"
-          :class="{ done: cell.done, today: cell.isToday, future: cell.isFuture }"
+          :class="{ done: cell.done, today: cell.isToday, future: cell.isFuture, selected: cell.iso === selected, clickable: selectable }"
           :title="cell.done ? 'Workout completed' : ''"
+          @click="selectable && emit('select', cell.iso)"
         >
           {{ cell.day }}
         </div>
@@ -156,6 +164,18 @@ h2 {
 
 .cell.future {
   opacity: 0.3;
+}
+
+.cell.clickable {
+  cursor: pointer;
+}
+
+.cell.clickable:hover {
+  filter: brightness(1.2);
+}
+
+.cell.selected {
+  box-shadow: inset 0 0 0 2px var(--accent-2);
 }
 
 .summary {
