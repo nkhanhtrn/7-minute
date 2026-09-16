@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/7-minutes/',
+  base: '/7-minute/',
   plugins: [
     vue(),
     VitePWA({
@@ -16,8 +16,8 @@ export default defineConfig({
         theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'standalone',
-        start_url: '/7-minutes/',
-        scope: '/7-minutes/',
+        start_url: '/7-minute/',
+        scope: '/7-minute/',
         icons: [
           { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
           { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
@@ -25,7 +25,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        navigateFallback: '/7-minutes/index.html',
+        navigateFallback: '/7-minute/index.html',
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
       },
     }),
