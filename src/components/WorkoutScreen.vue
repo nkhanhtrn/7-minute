@@ -37,7 +37,7 @@ const PHASES = {
     <TimerRing :remaining="remaining" :total="phaseDuration" :color="PHASES[phase].color" />
 
     <div class="exercise">
-      <div class="emoji">{{ phase === 'rest' && nextExercise ? nextExercise.emoji : exercise.emoji }}</div>
+      <img class="pose" :src="(phase === 'rest' && nextExercise ? nextExercise : exercise).img" :alt="(phase === 'rest' && nextExercise ? nextExercise : exercise).name" />
       <h2 v-if="phase !== 'rest'">{{ exercise.name }}</h2>
       <template v-else>
         <h2 v-if="nextExercise">Up next: {{ nextExercise.name }}</h2>
@@ -122,10 +122,11 @@ const PHASES = {
   color: #a78bfa;
 }
 
-.emoji {
-  font-size: 3rem;
-  text-align: center;
-  line-height: 1;
+.pose {
+  width: clamp(96px, 18vw, 160px);
+  height: clamp(96px, 18vw, 160px);
+  object-fit: contain;
+  margin: 0 auto;
 }
 
 h2 {

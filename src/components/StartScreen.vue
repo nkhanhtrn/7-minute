@@ -46,7 +46,7 @@ defineEmits(['start', 'continue'])
         <h2>The Circuit</h2>
         <ol>
           <li v-for="(ex, i) in EXERCISES" :key="ex.name">
-            <span class="emoji">{{ ex.emoji }}</span>
+            <img class="pose" :src="ex.img" :alt="ex.name" loading="lazy" />
             <span class="name">{{ ex.name }}</span>
             <span class="step">{{ i + 1 }} / {{ EXERCISES.length }}</span>
           </li>
@@ -201,8 +201,11 @@ li {
   background: rgba(51, 65, 85, 0.35);
 }
 
-.emoji {
-  font-size: 1.3rem;
+.pose {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .name {
