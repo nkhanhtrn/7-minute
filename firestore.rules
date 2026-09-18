@@ -1,0 +1,12 @@
+rules_version = '2';
+
+// Owner-scoped: any signed-in user may read/write only their own
+// users/{uid}/** namespace. Watch + web share one account, hence one
+// history. Deploy: firebase deploy --only firestore:rules
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
